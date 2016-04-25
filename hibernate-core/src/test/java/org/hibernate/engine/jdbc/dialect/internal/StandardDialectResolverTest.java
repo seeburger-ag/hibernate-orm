@@ -27,7 +27,6 @@ package org.hibernate.engine.jdbc.dialect.internal;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 
 import org.hibernate.dialect.Dialect;
@@ -36,8 +35,8 @@ import org.hibernate.dialect.PostgreSQL82Dialect;
 import org.hibernate.dialect.PostgreSQL9Dialect;
 import org.hibernate.dialect.SQLServer2005Dialect;
 import org.hibernate.dialect.SQLServer2008Dialect;
+import org.hibernate.dialect.SQLServer2012Dialect;
 import org.hibernate.dialect.SQLServerDialect;
-import org.hibernate.dialect.resolver.DialectResolverTest;
 import org.hibernate.dialect.resolver.TestingDialectResolutionInfo;
 
 import org.hibernate.testing.junit4.BaseUnitTestCase;
@@ -72,6 +71,12 @@ public class StandardDialectResolverTest extends BaseUnitTestCase {
 	public void testResolveDialectInternalForSQLServer2012() 
 			throws SQLException {
 		runSQLServerDialectTest( 11, SQLServer2008Dialect.class );
+	}
+
+	@Test
+	public void testResolveDialectInternalForSQLServer2014()
+			throws SQLException {
+		runSQLServerDialectTest( 12, SQLServer2012Dialect.class );
 	}
 
 	@Test
