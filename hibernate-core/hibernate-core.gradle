@@ -1,5 +1,4 @@
 apply plugin: 'antlr'
-apply plugin: 'hibernate-matrix-testing'
 
 apply plugin: 'version-injection'
 
@@ -56,6 +55,8 @@ def osgiDescription() {
 jar {
     manifest {
         mainAttributes( 'Main-Class': 'org.hibernate.Version' )
+
+        symbolicName = 'org.hibernate.core'
 
         instructionFirst 'Import-Package',
             'javax.security.auth;resolution:=optional',

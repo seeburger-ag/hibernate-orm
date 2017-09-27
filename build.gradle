@@ -34,15 +34,14 @@ buildscript {
     }
     dependencies {
         classpath 'org.hibernate.build.gradle:gradle-maven-publish-auth:2.0.1'
-        classpath 'org.hibernate.build.gradle:hibernate-matrix-testing:1.0.0-SNAPSHOT'
         classpath 'org.hibernate.build.gradle:version-injection-plugin:1.0.0'
     }
 }
 
 ext {
     expectedGradleVersion = '1.9'
-    hibernateTargetVersion = '4.3.12-SNAPSHOT'
-    javaLanguageLevel = '1.6'
+    hibernateTargetVersion = '4.3.11.SEE1'
+    javaLanguageLevel = '1.7'
 
     osgiExportVersion = hibernateTargetVersion.replaceAll( "-SNAPSHOT", ".SNAPSHOT" )
 }
@@ -91,7 +90,7 @@ subprojects { subProject ->
 
     defaultTasks 'build'
 
-    group = 'org.hibernate'
+    group = 'com.seeburger.fork'
     version = rootProject.hibernateTargetVersion
     ext.exportPackageVersion = rootProject.osgiExportVersion
 
@@ -156,7 +155,7 @@ subprojects { subProject ->
 		jaxb( libraries.jaxb2_ant )
 
 		animalSniffer ( libraries.animal_sniffer )
-		javaApiSignature ( libraries.java16_signature )
+		javaApiSignature ( libraries.java17_signature )
 	}
 
 	// mac-specific stuff ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -386,9 +385,9 @@ subprojects { subProject ->
 							url 'https://hibernate.atlassian.net/browse/HHH'
 						}
 						scm {
-							url 'http://github.com/hibernate/hibernate-orm'
-							connection 'scm:git:http://github.com/hibernate/hibernate-orm.git'
-							developerConnection 'scm:git:git@github.com:hibernate/hibernate-orm.git'
+							url 'https://github.com/seeburger-ag/hibernate-orm'
+							connection 'scm:git:https://github.com/seeburger-ag/hibernate-orm.git'
+							developerConnection 'scm:git:git@github.com/seeburger-ag/hibernate-orm.git'
 						}
 						licenses {
 							license {
@@ -421,11 +420,11 @@ subprojects { subProject ->
 			maven {
 				if ( subProject.version.endsWith( 'SNAPSHOT' ) ) {
 					name 'jboss-snapshots-repository'
-					url 'https://repository.jboss.org/nexus/content/repositories/snapshots'
+					url 'https://repo.seeburger.de/archiva/repository/snapshot/'
 				}
 				else {
 					name 'jboss-releases-repository'
-					url 'https://repository.jboss.org/nexus/service/local/staging/deploy/maven2/'
+					url 'https://repo.seeburger.de/archiva/repository/release/'
 				}
 			}
 		}
