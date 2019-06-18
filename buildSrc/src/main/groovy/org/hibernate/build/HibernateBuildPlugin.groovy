@@ -118,11 +118,11 @@ class HibernateBuildPlugin implements Plugin<Project> {
 						system 'jira'
 						url 'https://hibernate.atlassian.net/browse/HHH'
 					}
-					scm {
-						url 'http://github.com/hibernate/hibernate-orm'
-						connection 'scm:git:http://github.com/hibernate/hibernate-orm.git'
-						developerConnection 'scm:git:git@github.com:hibernate/hibernate-orm.git'
-					}
+		            scm {
+                         url 'https://github.com/seeburger-ag/hibernate-orm'
+                         connection 'scm:git:https://github.com/seeburger-ag/hibernate-orm.git'
+                         developerConnection 'scm:git:git@github.com/seeburger-ag/hibernate-orm.git'
+                    }
 					developers {
 						developer {
 							id 'hibernate-team'

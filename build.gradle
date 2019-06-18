@@ -452,67 +452,20 @@ subprojects { subProject ->
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// Publishing
-	publishing {
-		publications {
-			mavenJava(MavenPublication) {
-				from components.java
+	   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // Publishing
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                from components.java
 
-				artifact( sourcesJar ) {
-					classifier 'sources'
-				}
-
-				pom.withXml {
-                    // append additional metadata
-                    asNode().children().last() + {
-                        resolveStrategy = Closure.DELEGATE_FIRST
-
-                        name subProject.mavenPom.name
-                        description subProject.mavenPom.description
-                        url 'http://hibernate.org'
-                        organization {
-                            name 'Hibernate.org'
-                            url 'http://hibernate.org'
-                        }
-                        issueManagement {
-                            system 'jira'
-                            url 'https://hibernate.atlassian.net/browse/HHH'
-                        }
-                        scm {
-                            url 'https://github.com/seeburger-ag/hibernate-orm'
-                            connection 'scm:git:https://github.com/seeburger-ag/hibernate-orm.git'
-                            developerConnection 'scm:git:git@github.com/seeburger-ag/hibernate-orm.git'
-                        }
-                        licenses {
-                            license {
-                                name 'GNU Lesser General Public License'
-                                url 'http://www.gnu.org/licenses/lgpl-2.1.html'
-                                comments 'See discussion at http://hibernate.org/license for more details.'
-                                distribution 'repo'
-                            }
-                        }
-                        developers {
-                            developer {
-                                id 'hibernate-team'
-                                name 'The Hibernate Development Team'
-                                organization 'Hibernate.org'
-                                organizationUrl 'http://hibernate.org'
-                            }
-                        }
-                    }
+                artifact( sourcesJar ) {
+                    classifier 'sources'
                 }
-			}
-			// http://issues.gradle.org/browse/GRADLE-2966
-			// Once ^^ is resolved:
-			//		1) Move hibernate-testing module into hibernate-core tests
-			//		2) Define a second publication on hibernate-core for publishing the testing jar
-			// We could kind of do this now, but it would just be the jar.  Every module would still need
-			// to duplicate the testing dependencies.  Well, on second thought, we could centralize the
-			// testing dependencies here within the subprojects block
-		}
+            }
+        }
 
-		repositories {
+        repositories {
             maven {
                 if ( subProject.version.endsWith( 'SNAPSHOT' ) ) {
                     name 'jboss-snapshots-repository'
@@ -524,7 +477,7 @@ subprojects { subProject ->
                 }
             }
         }
-	}
+    }
 
 	model {
 		tasks.generatePomFileForMavenJavaPublication {
