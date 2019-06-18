@@ -107,6 +107,7 @@ jar {
 	manifest {
 		instruction 'Bundle-Activator', 'org.hibernate.osgi.HibernateBundleActivator'
         instruction 'Provide-Capability', 'osgi.service;effective:=active;objectClass=javax.persistence.spi.PersistenceProvider'
+        symbolicName = 'org.hibernate.osgi'
 		instructionFirst 'Import-Package',
 			// TODO: Shouldn't have to explicitly list this, but the plugin
 			// generates it with a [1.0,2) version.

@@ -468,8 +468,8 @@ subprojects { subProject ->
                     asNode().children().last() + {
                         resolveStrategy = Closure.DELEGATE_FIRST
 
-                        name subProject.pomName()
-                        description subProject.pomDescription()
+                        name subProject.mavenPom.name
+                        description subProject.mavenPom.description
                         url 'http://hibernate.org'
                         organization {
                             name 'Hibernate.org'

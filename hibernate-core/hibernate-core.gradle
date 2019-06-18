@@ -7,7 +7,6 @@ import org.apache.tools.ant.filters.ReplaceTokens
  * See the lgpl.txt file in the root directory or <http://www.gnu.org/licenses/lgpl-2.1.html>.
  */
 apply plugin: 'antlr'
-apply plugin: 'hibernate-matrix-testing'
 
 apply plugin: 'org.hibernate.build.gradle.xjc'
 
@@ -125,6 +124,8 @@ def osgiDescription() {
 jar {
     manifest {
         mainAttributes( 'Main-Class': 'org.hibernate.Version' )
+
+        symbolicName = 'org.hibernate.core'
 
         instructionFirst 'Import-Package',
             'javax.security.auth;resolution:=optional',
