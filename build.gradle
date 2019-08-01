@@ -40,7 +40,7 @@ buildscript {
 
 ext {
     expectedGradleVersion = '1.9'
-    hibernateTargetVersion = '4.3.11.SEE3'
+    hibernateTargetVersion = '4.3.11.SEE4'
     javaLanguageLevel = '1.7'
 
     osgiExportVersion = hibernateTargetVersion.replaceAll( "-SNAPSHOT", ".SNAPSHOT" )
@@ -55,7 +55,7 @@ idea {
                 def maxHeapSizeConfig =  provider.node.component.find { it.@name == 'JavacSettings' }
                 if( maxHeapSizeConfig == null ){
                     def javacSettingsNode =  provider.node.appendNode('component',[name: 'JavacSettings'])
-                    javacSettingsNode.appendNode('option', [name:"MAXIMUM_HEAP_SIZE", value:"512"])
+                    javacSettingsNode.appendNode('option', [name:"MAXIMUM_HEAP_SIZE", value:"1024"])
                 }
             }
             beforeMerged { project ->
