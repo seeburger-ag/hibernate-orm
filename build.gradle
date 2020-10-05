@@ -4,33 +4,40 @@ apply from: "./libraries.gradle"
 
 allprojects {
     repositories {
-        mavenCentral()
+        maven {
+            name "seeOpenSource"
+            url "http://repo.seeburger.de/repository/opensource/"
+        }
         mavenLocal()
 
+/*
         maven {
             name 'jboss-nexus'
-            url "http://repository.jboss.org/nexus/content/groups/public/"
+             url "https://repository.jboss.org/nexus/content/groups/public/"
         }
         maven {
             name "jboss-snapshots"
-            url "http://snapshots.jboss.org/maven2/"
+            url "https://snapshots.jboss.org/maven2/"
         }
+*/
     }
 }
 
 buildscript {
     repositories {
-        mavenCentral()
+        maven { url "http://repo.seeburger.de/repository/opensource/" }
         mavenLocal()
 
+/*
         maven {
             name 'jboss-nexus'
-            url "http://repository.jboss.org/nexus/content/groups/public/"
+            url "https://repository.jboss.org/nexus/content/groups/public/"
         }
         maven {
             name "jboss-snapshots"
-            url "http://snapshots.jboss.org/maven2/"
+            url "https://snapshots.jboss.org/maven2/"
         }
+*/
     }
     dependencies {
         classpath 'org.hibernate.build.gradle:gradle-maven-publish-auth:2.0.1'

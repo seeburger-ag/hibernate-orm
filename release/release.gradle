@@ -12,15 +12,17 @@ final String[] versionComponents = version.split( '\\.' );
 final String majorVersion = versionComponents[0];
 final String majorMinorVersion = versionComponents[0] + '.' + versionComponents[1];
 
+/*
 final File documentationDir = mkdir( "${project.buildDir}/documentation" );
 final File ormDocumentationDir = mkdir( new File( documentationDir, "orm" ) )
 final File versionedDocumentationDir = mkdir( new File( ormDocumentationDir, majorMinorVersion ) );
-
+*/
 /**
  * Assembles all documentation into the {buildDir}/documentation directory.
  *
  * Depends on building the docs
  */
+ /*
 task assembleDocumentation(type: Task, dependsOn: [rootProject.project( 'documentation' ).tasks.buildDocs]) {
     description = 'Assembles all documentation into the {buildDir}/documentation directory'
 
@@ -42,10 +44,12 @@ task assembleDocumentation(type: Task, dependsOn: [rootProject.project( 'documen
         }
     }
 }
+*/
 
 /**
  * Upload the documentation to the JBoss doc server
  */
+ /*
 task uploadDocumentation(type:Exec, dependsOn: assembleDocumentation) {
     description = "Uploads documentation to the JBoss doc server"
 
@@ -68,7 +72,7 @@ task uploadDocumentation(type:Exec, dependsOn: assembleDocumentation) {
         logger.lifecycle( 'Done uploading documentation' )
     }
 }
-
+*/
 
 /**
  * Configuration of the distribution plugin, used to build release bundle as both ZIP and TGZ
@@ -167,8 +171,8 @@ distributions {
     }
 }
 
-distZip.dependsOn assembleDocumentation
-distTar.dependsOn assembleDocumentation
+// distZip.dependsOn assembleDocumentation
+// distTar.dependsOn assembleDocumentation
 distTar {
     compression = Compression.GZIP
 }
@@ -220,7 +224,7 @@ task publishAllSubProjects(type: Task) {
 
 task buildAllSubProjects(type: Task, dependsOn: [testAllSubProjects,publishAllSubProjects])
 
-task uploadReleaseArtifacts(type: Task, dependsOn: [uploadDocumentation, uploadBundles])
+task uploadReleaseArtifacts(type: Task, dependsOn: [uploadBundles])
 
 task announce(type: Task) { doFirst { println 'Hear ye, hear ye...' } }
 

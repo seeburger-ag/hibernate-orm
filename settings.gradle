@@ -12,7 +12,7 @@ include 'hibernate-hikaricp'
 include 'hibernate-ehcache'
 include 'hibernate-infinispan'
 
-include 'documentation'
+// include 'documentation'
 include 'release'
 
 include 'metamodel-generator'
