@@ -146,7 +146,7 @@ public class PostgreSQL81Dialect extends Dialect {
 		registerFunction( "user", new NoArgSQLFunction("user", StandardBasicTypes.STRING, false) );
 		registerFunction( "current_database", new NoArgSQLFunction("current_database", StandardBasicTypes.STRING, true) );
 		registerFunction( "current_schema", new NoArgSQLFunction("current_schema", StandardBasicTypes.STRING, true) );
-		
+
 		registerFunction( "to_char", new StandardSQLFunction("to_char", StandardBasicTypes.STRING) );
 		registerFunction( "to_date", new StandardSQLFunction("to_date", StandardBasicTypes.DATE) );
 		registerFunction( "to_timestamp", new StandardSQLFunction("to_timestamp", StandardBasicTypes.TIMESTAMP) );
@@ -229,7 +229,7 @@ public class PostgreSQL81Dialect extends Dialect {
 
 	@Override
 	public String getQuerySequencesString() {
-		return "select relname from pg_class where relkind='S'";
+		return "select * from information_schema.sequences";
 	}
 
 	@Override
@@ -403,7 +403,7 @@ public class PostgreSQL81Dialect extends Dialect {
 			}
 		}
 	};
-	
+
 	@Override
 	public SQLExceptionConversionDelegate buildSQLExceptionConversionDelegate() {
 		return new SQLExceptionConversionDelegate() {
@@ -452,9 +452,37 @@ public class PostgreSQL81Dialect extends Dialect {
 	 */
 	@Override
 	protected String getCreateSequenceString(String sequenceName, int initialValue, int incrementSize) {
-		return getCreateSequenceString( sequenceName ) + " start " + initialValue + " increment " + incrementSize;
+		if ( initialValue < 0 && incrementSize > 0 ) {
+			return
+					String.format(
+							"%s minvalue %d start %d increment %d",
+							getCreateSequenceString( sequenceName ),
+							initialValue,
+							initialValue,
+							incrementSize
+					);
+		}
+		else if ( initialValue > 0 && incrementSize < 0 ) {
+			return
+					String.format(
+							"%s maxvalue %d start %d increment %d",
+							getCreateSequenceString( sequenceName ),
+							initialValue,
+							initialValue,
+							incrementSize
+					);
+		}
+		else {
+			return
+					String.format(
+							"%s start %d increment %d",
+							getCreateSequenceString( sequenceName ),
+							initialValue,
+							incrementSize
+					);
+		}
 	}
-	
+
 	// Overridden informational metadata ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	@Override
@@ -506,12 +534,12 @@ public class PostgreSQL81Dialect extends Dialect {
 	public boolean supportsRowValueConstructorSyntax() {
 		return true;
 	}
-	
+
 	@Override
 	public String getForUpdateNowaitString() {
 		return getForUpdateString() + " nowait ";
 	}
-	
+
 	@Override
 	public String getForUpdateNowaitString(String aliases) {
 		return getForUpdateString( aliases ) + " nowait ";
@@ -532,6 +560,11 @@ public class PostgreSQL81Dialect extends Dialect {
 
 	@Override
 	public ResultSet getResultSet(CallableStatement statement, String name) throws SQLException {
-		throw new UnsupportedOperationException( "PostgreSQL only supports accessing REF_CURSOR parameters by name" );
+		throw new UnsupportedOperationException( "PostgreSQL only supports accessing REF_CURSOR parameters by position" );
+	}
+
+	@Override
+	public boolean qualifyIndexName() {
+		return false;
 	}
 }

@@ -45,10 +45,12 @@ import org.hibernate.dialect.Oracle10gDialect;
 import org.hibernate.dialect.Oracle12cDialect;
 import org.hibernate.dialect.Oracle8iDialect;
 import org.hibernate.dialect.Oracle9iDialect;
+import org.hibernate.dialect.PostgreSQL10Dialect;
 import org.hibernate.dialect.PostgreSQL81Dialect;
 import org.hibernate.dialect.PostgreSQL82Dialect;
 import org.hibernate.dialect.PostgreSQL92Dialect;
 import org.hibernate.dialect.PostgreSQL94Dialect;
+import org.hibernate.dialect.PostgreSQL95Dialect;
 import org.hibernate.dialect.PostgreSQL9Dialect;
 import org.hibernate.dialect.PostgresPlusDialect;
 import org.hibernate.dialect.SQLServer2005Dialect;
@@ -102,24 +104,33 @@ public class StandardDialectResolver implements DialectResolver {
 		}
 
 		if ( "PostgreSQL".equals( databaseName ) ) {
-			final int majorVersion = info.getDatabaseMajorVersion();
-			final int minorVersion = info.getDatabaseMinorVersion();
+				final int majorVersion = info.getDatabaseMajorVersion();
+				final int minorVersion = info.getDatabaseMinorVersion();
 
-			if ( majorVersion == 9 ) {
-				if ( minorVersion >= 4 ) {
-					return new PostgreSQL94Dialect();
+				if ( majorVersion < 8 ) {
+						return new PostgreSQL81Dialect();
 				}
-				else if ( minorVersion >= 2 ) {
-					return new PostgreSQL92Dialect();
+
+				if ( majorVersion == 8 ) {
+						return minorVersion >= 2 ? new PostgreSQL82Dialect() : new PostgreSQL81Dialect();
 				}
-				return new PostgreSQL9Dialect();
-			}
 
-			if ( majorVersion == 8 && minorVersion >= 2 ) {
-				return new PostgreSQL82Dialect();
-			}
+				if ( majorVersion == 9 ) {
+						if ( minorVersion < 2 ) {
+								return new PostgreSQL9Dialect();
+						}
+						else if ( minorVersion < 4 ) {
+								return new PostgreSQL92Dialect();
+						}
+						else if ( minorVersion < 5 ) {
+								return new PostgreSQL94Dialect();
+						}
+						else {
+								return new PostgreSQL95Dialect();
+						}
+				}
 
-			return new PostgreSQL81Dialect();
+				return new PostgreSQL10Dialect();
 		}
 
 		if ( "EnterpriseDB".equals( databaseName ) ) {
@@ -217,24 +228,19 @@ public class StandardDialectResolver implements DialectResolver {
 			final int majorVersion = info.getDatabaseMajorVersion();
 
 			switch ( majorVersion ) {
-				case 19:
-					// fall through
-				case 18:
-				    // fall through
-				case 12:
-					return new Oracle12cDialect();
-				case 11:
-					// fall through
-				case 10:
-					return new Oracle10gDialect();
-				case 9:
-					return new Oracle9iDialect();
-				case 8:
-					return new Oracle8iDialect();
-				default:
-					LOG.unknownOracleVersion( majorVersion );
+					case 12:
+							return new Oracle12cDialect();
+					case 11:
+							// fall through
+					case 10:
+							return new Oracle10gDialect();
+					case 9:
+							return new Oracle9iDialect();
+					case 8:
+							return new Oracle8iDialect();
+					default:
+							return new Oracle12cDialect();
 			}
-			return new Oracle10gDialect();
 		}
 
 		if ( "HDB".equals( databaseName ) ) {

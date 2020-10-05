@@ -23,9 +23,13 @@
  */
 package org.hibernate.dialect;
 
+import org.hibernate.metamodel.spi.TypeContributions;
+import org.hibernate.service.ServiceRegistry;
+import org.hibernate.type.PostgresUUIDType;
+
 /**
  * An SQL dialect for Postgres 8.2 and later, adds support for "if exists" when dropping tables
- * 
+ *
  * @author edalquist
  */
 public class PostgreSQL82Dialect extends PostgreSQL81Dialect {
@@ -33,4 +37,41 @@ public class PostgreSQL82Dialect extends PostgreSQL81Dialect {
 	public boolean supportsIfExistsBeforeTableName() {
 		return true;
 	}
+
+	@Override
+    public void contributeTypes(TypeContributions typeContributions, ServiceRegistry serviceRegistry) {
+        super.contributeTypes( typeContributions, serviceRegistry );
+
+        // HHH-9562
+        typeContributions.contributeType( PostgresUUIDType.INSTANCE );
+    }
+
+//    @Override
+//    public MultiTableBulkIdStrategy getDefaultMultiTableBulkIdStrategy() {
+//        return new LocalTemporaryTableBulkIdStrategy(
+//                new IdTableSupportStandardImpl() {
+//                    @Override
+//                    public String getCreateIdTableCommand() {
+//                        return "create temporary  table";
+//                    }
+//
+//                    @Override
+//                    public String getDropIdTableCommand() {
+//                        return "drop table";
+//                    }
+//                },
+//                AfterUseAction.DROP,
+//                null
+//        );
+//    }
+
+    @Override
+    public String getDropSequenceString(String sequenceName) {
+        return "drop sequence if exists " + sequenceName;
+    }
+
+    @Override
+    public boolean supportsRowValueConstructorSyntaxInInList() {
+        return true;
+    }
 }
