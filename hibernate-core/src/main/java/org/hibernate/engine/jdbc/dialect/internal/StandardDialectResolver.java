@@ -187,7 +187,6 @@ public class StandardDialectResolver implements DialectResolver {
 					}
 					else {
 						// assume `majorVersion > 13`
-						LOG.unknownSqlServerVersion( majorVersion, SQLServer2012Dialect.class );
 						return new SQLServer2012Dialect();
 					}
 				}
